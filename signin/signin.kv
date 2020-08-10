@@ -1,0 +1,64 @@
+<SigninWindow>:
+    id: main_win
+    orientation: "vertical"
+    spacing: 10
+    space_x: self.size[0]/3
+    canvas.before:
+        Color:
+            rgba: (1,1,1,1)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    BoxLayout:
+        size_hint_y: None
+        height: 50
+        canvas.before:
+            Color:
+                rgba: (.06,.45,.45,1)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        Label:
+            text: "Login In Dashboard"
+            bold: True
+            size_hint_x: .9
+        Button:
+            text: "New Database"
+            size_hint_x: .2
+    Label:
+        id: Space1
+        size_hint_y: None
+        height:10
+    BoxLayout:
+        orientation: "vertical"
+        padding: main_win.space_x,10
+        size_hint_y: None
+        height:120
+        TextInput:
+            id:username_field
+            hint_text: "Username"
+            multiline: False
+            focus: True
+            on_text_validate: pwd_field.focus = True
+        TextInput:
+            id: pwd_field
+            hint_text: "Password"
+            multiline: False
+            password: True
+            on_text_validate: root.validate_user()
+            
+        Button:
+            text: "Sign In"
+            on_release: root.validate_user()
+    Label:
+        id: status
+        text: 'Enter Your name'
+        markup: True
+        size_hint_y: None
+        height: 20
+    Label:
+        id: Space1
+        size_hint_y: None
+        height:200
+    
+            

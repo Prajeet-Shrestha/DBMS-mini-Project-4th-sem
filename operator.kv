@@ -1,0 +1,359 @@
+#<FlatButton@ButtonBehavior+Label>
+
+<OperatorWindow>:
+    id: main_win
+    orientation: 'vertical'
+    canvas.before:
+        Color:
+            rgba: (.06,.45,.45,1)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    BoxLayout:
+        id: top_nav
+        size_hint_y: None
+        height:30
+        pos: self.pos
+        canvas.before:
+            Color:
+                rgba: (.06,.45,.45,1)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        Button:
+            id: file_trigger
+            text: 'Table Name'
+            size_hint: (.1,None)
+            background_color: (.06,.47,.47,1)
+            background_normal: ''
+            height:30
+            on_release: file_dropdown.open(self)
+            Widget:
+                on_parent: file_dropdown.dismiss()
+                DropDown:
+                    id: file_dropdown
+                    Button:
+                        id:close
+                        text: 'Quit'
+                        size_hint_y: None
+                        height: 30
+                    
+
+        Label:
+            text: 'Main Dashboard'
+            bold: True
+            height: 30
+            size_hint: (.9,None)
+    BoxLayout:
+        id: content_nav
+        pos_hint:{'top': 1}
+        BoxLayout:
+            id: nav_tabs
+            size_hint_x: .2
+            orientation: 'vertical'
+            spacing: 4
+            pos_hint:{'top': 1}
+            canvas.before:
+                Color:
+                    rgba: (.06,.40,.40,1)
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            ToggleButton:
+                id: Employee
+                text: 'Employee'
+                size_hint_y: None
+                height: 35
+                state: 'down'
+                background_color: (.06,.47,.47,1)
+                background_normal: ''
+                group: 'operator_nav'
+                on_state: root.change_screen(self)
+            ToggleButton:
+                id: post
+                text: 'post'
+                size_hint_y: None
+                height: 20
+                background_color: (.06,.47,.47,1)
+                background_normal: ''
+                group: 'operator_nav'
+                on_state: root.change_screen(self)
+            ToggleButton:
+                id: sales
+                text: 'sales'
+                size_hint_y: None
+                height: 20
+                background_color: (.06,.47,.47,1)
+                background_normal: ''
+                on_state: root.change_screen(self)
+            ToggleButton:
+                id: purchases
+                text: 'purchases'
+                size_hint_y: None
+                height: 20
+                background_color: (.06,.47,.47,1)
+                background_normal: ''
+                group: 'operator_nav'
+                on_state: root.change_screen(self)
+            ToggleButton:
+                id: dealer
+                text: 'dealer'
+                size_hint_y: None
+                height: 20
+                background_color: (.06,.47,.47,1)
+                background_normal: ''
+                group: 'operator_nav'
+                on_state: root.change_screen(self)
+            ToggleButton:
+                id: supplier
+                text: 'supplier'
+                size_hint_y: None
+                height: 20
+                background_color: (.06,.47,.47,1)
+                background_normal: ''
+                group: 'operator_nav'
+                on_state: root.change_screen(self)
+            ToggleButton:
+                id: project
+                text: 'project'
+                size_hint_y: None
+                height: 20
+                background_color: (.06,.47,.47,1)
+                background_normal: ''
+                group: 'operator_nav'
+                on_state: root.change_screen(self)
+                
+            Label:
+                id: sp
+                text: ''
+                size_hint_y: .7
+                    
+        BoxLayout:
+            id: all_content
+            size_hint_x: .8
+            padding: (20,10)
+            ScreenManager:
+                id: screen_mngr
+                #Employee
+                Screen:
+                    id: content_emp
+                    name: 'content_emp'
+                    BoxLayout:
+                        orientation: 'vertical'
+                        BoxLayout:
+                            id: content_emp_op
+                            size_hint_y: None
+                            height: 200
+                        BoxLayout:
+                            id: right_nav_emp
+                            size_hint_x:.9
+                            padding: (10,10)
+                            pos_hint:{'right': .9}
+                            orientation: 'vertical'
+                        BoxLayout:
+                            id: ops_fields
+                            spacing: 10
+                            size_hint_y: None
+                            height: 35
+                        BoxLayout:
+                            id: ops_btns
+                            spacing:10
+                            size_hint_y: None
+                            height: 45
+                            Button:
+                                id: add
+                                text: 'Add'
+                                on_release: root.add_employee_field()
+                            Button:
+                                id: update
+                                text: 'Update'
+                                on_release: root.update_employee_field()
+                            Button:
+                                id: remove
+                                text: 'Remove'
+                    
+                Screen:
+                    id: content_sales
+                    name: 'content_sales'
+                    BoxLayout:
+                        orientation: 'vertical'
+                        BoxLayout:
+                            id: content_sales_table
+                            size_hint_y: None
+                            height: 200
+                        BoxLayout:
+                            id: right_nav_sales
+                            size_hint_x:.9
+                            padding: (10,10)
+                            pos_hint:{'right': .9}
+                            orientation: 'vertical'
+                        BoxLayout:
+                            id: ops_fields
+                            spacing: 10
+                            size_hint_y: None
+                            height: 35
+                        BoxLayout:
+                            id: ops_btns
+                            spacing:10
+                            size_hint_y: None
+                            height: 45
+
+
+                #position
+                Screen:
+                    id: content_post_main
+                    name: 'content_post_main'
+                    BoxLayout:
+                        orientation: 'vertical'
+                        BoxLayout:
+                            id: content_post_table
+                            size_hint_y: None
+                            height: 200
+                        BoxLayout:
+                            id: right_nav_post
+                            size_hint_x:.9
+                            padding: (10,10)
+                            pos_hint:{'right': .9}
+                            orientation: 'vertical'
+                        BoxLayout:
+                            id: ops_fields
+                            spacing: 10
+                            size_hint_y: None
+                            height: 35
+                        BoxLayout:
+                            id: ops_btns
+                            spacing:10
+                            size_hint_y: None
+                            height: 45
+                            Button:
+                                id: add
+                                text: 'Add'
+                                on_release: root.add_post_field()
+                            Button:
+                                id: update
+                                text: 'Update'
+                                on_release: root.update_post_field()
+                            Button:
+                                id: remove
+                                text: 'Remove'
+                #dealer
+                Screen:
+                    id: content_dealer
+                    name: 'content_dealer'
+                    BoxLayout:
+                        orientation: 'vertical'
+                        BoxLayout:
+                            id: content_dealer_table
+                            size_hint_y: None
+                            height: 200
+                        BoxLayout:
+                            id: right_nav_dealer
+                            size_hint_x:.9
+                            padding: (10,10)
+                            pos_hint:{'right': .9}
+                            orientation: 'vertical'
+                        BoxLayout:
+                            id: ops_fields
+                            spacing: 10
+                            size_hint_y: None
+                            height: 35
+                        BoxLayout:
+                            id: ops_btns
+                            spacing:10
+                            size_hint_y: None
+                            height: 45
+                            Button:
+                                id: add
+                                text: 'Add'
+                                on_release: root.add_dealer_field()
+                            Button:
+                                id: update
+                                text: 'Update'
+                            Button:
+                                id: remove
+                                text: 'Remove'
+                    
+                #purchases
+                Screen:
+                    id: content_purchases
+                    name: 'content_purchases'
+                    BoxLayout:
+                        orientation: 'vertical'
+                        BoxLayout:
+                            id: content_purchases_table
+                            size_hint_y: None
+                            height: 200
+                        BoxLayout:
+                            id: right_nav_purchases
+                            size_hint_x:.9
+                            padding: (10,10)
+                            pos_hint:{'right': .9}
+                            orientation: 'vertical'
+                        BoxLayout:
+                            id: ops_fields
+                            spacing: 10
+                            size_hint_y: None
+                            height: 35
+                        BoxLayout:
+                            id: ops_btns
+                            spacing:10
+                            size_hint_y: None
+                            height: 45
+                #Project
+                Screen:
+                    id: content_project 
+                    name: 'content_project'
+                    BoxLayout:
+                        orientation: 'vertical'
+                        BoxLayout:
+                            id: content_project_table
+                            size_hint_y: None
+                            height: 200
+                        BoxLayout:
+                            id: right_nav_project 
+                            size_hint_x:.9
+                            padding: (10,10)
+                            pos_hint:{'right': .9}
+                            orientation: 'vertical'
+                        BoxLayout:
+                            id: ops_fields
+                            spacing: 10
+                            size_hint_y: None
+                            height: 35
+                        BoxLayout:
+                            id: ops_btns
+                            spacing:10
+                            size_hint_y: None
+                            height: 45
+                #Supplier
+                Screen:
+                    id: content_supplier
+                    name: 'content_supplier'
+                    BoxLayout:
+                        orientation: 'vertical'
+                        BoxLayout:
+                            id: content_supplier_table
+                            size_hint_y: None
+                            height: 200
+                        BoxLayout:
+                            id: right_nav_supplier
+                            size_hint_x:.9
+                            padding: (10,10)
+                            pos_hint:{'right': .9}
+                            orientation: 'vertical'
+                        BoxLayout:
+                            id: ops_fields
+                            spacing: 10
+                            size_hint_y: None
+                            height: 35
+                        BoxLayout:
+                            id: ops_btns
+                            spacing:10
+                            size_hint_y: None
+                            height: 45
+
+    
+            
+                    
+            
+            
