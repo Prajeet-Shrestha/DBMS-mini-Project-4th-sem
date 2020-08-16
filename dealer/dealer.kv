@@ -78,7 +78,7 @@
                 on_state: root.change_screen(self)
             ToggleButton:
                 id: purchase_products
-                text: 'Product Details'
+                text: 'Purchase Details'
                 size_hint_y: None
                 height: 35
                 background_color: (.06,.47,.47,1)
@@ -106,6 +106,15 @@
             ToggleButton:
                 id: supplier
                 text: 'supplier'
+                size_hint_y: None
+                height: 35
+                background_color: (.06,.47,.47,1)
+                background_normal: ''
+                group: 'operator_nav'
+                on_state: root.change_screen(self)
+            ToggleButton:
+                id: raw_material
+                text: 'raw_material'
                 size_hint_y: None
                 height: 35
                 background_color: (.06,.47,.47,1)
@@ -163,7 +172,6 @@
                                 on_release: root.delete_sales_field()
 
 
-                #dealer
                 Screen:
                     id: content_sale_products
                     name: 'content_sale_products'
@@ -198,6 +206,45 @@
                             Button:
                                 id: remove
                                 text: 'Remove'
+                #DetailsP
+                Screen:
+                    id: content_purchase_products
+                    name: 'content_purchase_products'
+                    BoxLayout:
+                        orientation: 'vertical'
+                        BoxLayout:
+                            id: content_purchase_products_table
+                            size_hint_y: None
+                            height: 200
+                        BoxLayout:
+                            id: right_nav_purchase_products
+                            size_hint_x:.9
+                            padding: (10,10)
+                            pos_hint:{'right': .9}
+                            orientation: 'vertical'
+                        BoxLayout:
+                            id: ops_fields
+                            spacing: 10
+                            size_hint_y: None
+                            height: 35
+                        BoxLayout:
+                            id: ops_btns
+                            spacing:10
+                            size_hint_y: None
+                            height: 45
+                            Button:
+                                id: add
+                                text: 'Add'
+                                on_release: root.add_purchase_products_field()
+                                
+                            Button:
+                                id: update
+                                text: 'Update'
+                                on_release: root.update_purchase_products_field()
+                            Button:
+                                id: remove
+                                text: 'Remove'
+                                on_release: root.delete_purchase_products_field()
                     
                 #purchases
                 Screen:
@@ -237,7 +284,46 @@
                                 id: remove
                                 text: 'Remove'
                                 on_release: root.delete_purchases_field()
-                #Project
+#--------------------------------------------------------------------------------
+                Screen:
+                    id: content_raw_material
+                    name: 'content_raw_material'
+                    BoxLayout:
+                        orientation: 'vertical'
+                        BoxLayout:
+                            id: content_raw_material_table
+                            size_hint_y: None
+                            height: 200
+                        BoxLayout:
+                            id: right_nav_raw_material
+                            size_hint_x:.9
+                            padding: (10,10)
+                            pos_hint:{'right': .9}
+                            orientation: 'vertical'
+                        BoxLayout:
+                            id: ops_fields
+                            spacing: 10
+                            size_hint_y: None
+                            height: 35
+                        BoxLayout:
+                            id: ops_btns
+                            spacing:10
+                            size_hint_y: None
+                            height: 45
+                            Button:
+                                id: add
+                                text: 'Add'
+                                on_release: root.add_raw_material_field()
+                            Button:
+                                id: update
+                                text: 'Update'
+                                on_release: root.update_raw_material_field()
+                            Button:
+                                id: remove
+                                text: 'Remove'
+                                on_release: root.delete_raw_material_field()
+#--------------------------------------------------------------------------------
+                #retailer
                 Screen:
                     id: content_retailer 
                     name: 'content_retailer'
@@ -302,6 +388,18 @@
                             spacing:10
                             size_hint_y: None
                             height: 45
+                            Button:
+                                id: add
+                                text: 'Add'
+                                on_release: root.add_supplier_field()
+                            Button:
+                                id: update
+                                text: 'Update'
+                                on_release: root.update_supplier_field()
+                            Button:
+                                id: remove
+                                text: 'Remove'
+                                on_release: root.delete_supplier_field()
 
     
             

@@ -11,7 +11,7 @@ from utils.datatable import DataTable
 import numpy as np
 from kivy.lang import Builder
 
-#Builder.load_file('admin.kv')
+Builder.load_file('admin.kv')
 db = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -45,6 +45,7 @@ db.commit()
 class AdminWindow(BoxLayout):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
+        print("Admin Loaded")
 
         #Employee
         self.display_employee()
@@ -204,8 +205,9 @@ class AdminWindow(BoxLayout):
             pop.open()
         else:
             try:
-                content = self.ids.content_post
+                content = self.ids.content_post_table
                 content.clear_widgets()
+                print("in add post")
                 insert_query = "INSERT INTO post VALUES ('%s','%s','%s');"
                 cursor.execute(insert_query % (a1,a2,a3))
                 db.commit()
@@ -234,7 +236,7 @@ class AdminWindow(BoxLayout):
         print("disspoetarr",post_attr)
         usertable = DataTable(post_data,post_attr)
         content.add_widget(usertable)
-
+#----------------------------------------------------------------------------
     def delete_employee_field(self):
         target = self.ids.right_nav_emp
         target.clear_widgets()
@@ -424,7 +426,122 @@ class AdminWindow(BoxLayout):
         print("disarrt",employee_attr)
         usertable = DataTable(employee_data,employee_attr)
         content.add_widget(usertable)
+#============================================================================
+    def update_supplier_field(self):
+        target = self.ids.right_nav_supplier
+        target.clear_widgets()
+        e1 = TextInput(hint_text=supplier_attr[0],size_hint_y=None,height=30)
+        e2 = TextInput(hint_text=supplier_attr[1],size_hint_y=None,height=30)
+        e3 = TextInput(hint_text=supplier_attr[2],size_hint_y=None,height=30)
+        e4 = TextInput(hint_text=supplier_attr[3],size_hint_y=None,height=30)
+        e7 = TextInput(hint_text="Insert Supplier Name",size_hint_y=None,height=30)
+        update = Button(text='Update',size_hint_y=None,height=30,
+                        size_hint_x=None,
+                        width=100,
+                        on_release=lambda x: self.update_supplier(e1.text,e2.text,e3.text,e4.text,e7.text))
+        
+        clear= Button(text='Clear',size_hint_x=None,width=100,on_release=lambda x:self.clear_supplier(),size_hint_y=None,height=30)
+        target.add_widget(e7)
+        target.add_widget(e1)
+        target.add_widget(e2)
+        target.add_widget(e3)
+        target.add_widget(e4)
+        target.add_widget(update)
+        target.add_widget(clear)
+    def update_supplier(self,a1,a2,a3,a4,a5):
+        try:
+            
+            update_query = "UPDATE supplier SET supplier_name = '%s', address = '%s', email = '%s',contact_number='%s' WHERE supplier_name = '%s';"
+            cursor.execute(update_query % (a1,a2,a3,a4,a5))
+            db.commit()
+            content = self.ids.content_supplier_table
+            content.clear_widgets()
+            self.display_supplier()
+            pop = Popup(title="supplier updated", content=Label(text='supplier has been updated'),
+                        size_hint=(None, None), size=(400, 150))
+            pop.open()
+        except Exception as e:
+            print(e)
+            pop = Popup(title="Error", content=Label(text='supplier not updated. Incorrect data values.'),
+                        size_hint=(None, None), size=(500, 150))
+            pop.open()
+        
+    def add_supplier_field(self):
+        target = self.ids.right_nav_supplier
+        target.clear_widgets()
+        e1 = TextInput(hint_text=supplier_attr[0],size_hint_y=None,height=30)
+        e2 = TextInput(hint_text=supplier_attr[1],size_hint_y=None,height=30)
+        e3 = TextInput(hint_text=supplier_attr[2],size_hint_y=None,height=30)
+        e4 = TextInput(hint_text=supplier_attr[3],size_hint_y=None,height=30)
+        submit = Button(text='Add',
+                        size_hint_x=None,
+                        width=100,
+                        on_release=lambda x: self.add_supplier(e1.text,
+                                                                e2.text,
+                                                                e3.text,
+                                                                e4.text),size_hint_y=None,height=30)
+        clear= Button(text='Clear',size_hint_x=None,width=100,on_release=lambda x:self.clear_supplier(),size_hint_y=None,height=30)
+        target.add_widget(e1)
+        target.add_widget(e2)
+        target.add_widget(e3)
+        target.add_widget(e4)
+        target.add_widget(submit)
+        target.add_widget(clear)
 
+    def delete_supplier_field(self):
+        target = self.ids.right_nav_supplier
+        target.clear_widgets()
+        e1 = TextInput(hint_text="Insert Name",size_hint_y=None,height=30)
+        submit = Button(text='Delete',
+                        size_hint_x=None,
+                        width=100,
+                        on_release=lambda x: self.delete_supplier(e1.text),size_hint_y=None,height=30)
+        clear= Button(text='Clear',size_hint_x=None,width=100,on_release=lambda x:self.clear_supplier(),size_hint_y=None,height=30)
+        target.add_widget(e1)
+        target.add_widget(submit)
+        target.add_widget(clear)
+    def delete_supplier(self,a1):
+        try:
+            content = self.ids.content_supplier_table
+            content.clear_widgets()
+            delete_query = "DELETE FROM supplier WHERE supplier_name='%s';"
+            cursor.execute(delete_query % (a1))
+            db.commit()
+            self.display_supplier()
+            pop = Popup(title="supplier deleted", content=Label(text='supplier has been deleted'),
+                        size_hint=(None, None), size=(400, 150))
+            pop.open()
+        except Exception as e:
+            print(e)
+            pop = Popup(title="Error", content=Label(text='supplier cannot be deleted.'),
+                        size_hint=(None, None), size=(500, 150))
+            pop.open()
+    
+        
+    def clear_supplier(self):
+        self.add_supplier_field()
+        
+    def add_supplier(self,a1,a2,a3,a4):
+        if a1 == "" or a2 == "" or a3 == "":
+            pop = Popup(title="Missing Input", content=Label(text='Please enter all the required fields'),
+                        size_hint=(None, None), size=(400, 150))
+            pop.open()
+        else:
+            try:
+                content = self.ids.content_supplier_table
+                content.clear_widgets()
+                insert_query = "INSERT INTO supplier VALUES ('%s','%s','%s','%s');"
+                cursor.execute(insert_query % (a1,a2,a3,a4))
+                db.commit()
+                self.display_supplier()
+                pop = Popup(title="supplier added", content=Label(text='supplier has been added'),
+                            size_hint=(None, None), size=(350, 150))
+                pop.open()
+            except Exception as e:
+                print(e)
+                pop = Popup(title="Error", content=Label(text=e),
+                            size_hint=(None, None), size=(550, 150))
+                pop.open()
     def display_purchases(self):
         content = self.ids.content_purchases_table
         cursor.execute("SELECT * FROM purchases;")
@@ -449,7 +566,139 @@ class AdminWindow(BoxLayout):
             supplier_attr.append(i[0])
         usertable = DataTable(supplier_data,supplier_attr)
         content.add_widget(usertable)
+#===================================================================================================
+    def update_project_field(self):
+        target = self.ids.right_nav_project
+        target.clear_widgets()
+        e1 = TextInput(hint_text=project_attr[0],size_hint_y=None,height=30)
+        e2 = TextInput(hint_text=project_attr[1],size_hint_y=None,height=30)
+        e3 = TextInput(hint_text=project_attr[2],size_hint_y=None,height=30)
+        e4 = TextInput(hint_text=project_attr[3],size_hint_y=None,height=30)
+        e5 = TextInput(hint_text=project_attr[4],size_hint_y=None,height=30)
+        e6 = TextInput(hint_text=project_attr[5],size_hint_y=None,height=30)
+        e7 = TextInput(hint_text=project_attr[6],size_hint_y=None,height=30)
+        e8 = TextInput(hint_text=project_attr[7],size_hint_y=None,height=30)
+        e9 = TextInput(hint_text="Insert Supplier Name",size_hint_y=None,height=30)
+        update = Button(text='Update',size_hint_y=None,height=30,
+                        size_hint_x=None,
+                        width=100,
+                        on_release=lambda x: self.update_project(e1.text,e2.text,e3.text,e4.text,e5.text,e6.text,e7.text,e8.text,e9.text))
+        
+        clear= Button(text='Clear',size_hint_x=None,width=100,on_release=lambda x:self.clear_project(),size_hint_y=None,height=30)
+        target.add_widget(e9)
+        target.add_widget(e1)
+        target.add_widget(e2)
+        target.add_widget(e3)
+        target.add_widget(e4)
+        target.add_widget(e5)
+        target.add_widget(e6)
+        target.add_widget(e7)
+        target.add_widget(e8)
+        target.add_widget(update)
+        target.add_widget(clear)
+    def update_project(self,a1,a2,a3,a4,a5,a6,a7,a8,a9):
+        try:
+            
+            update_query = "UPDATE project SET project_codename = '%s', project_description = '%s', date_started = '%s',date_completed='%s',completion_rate='%s',project_status='%s',project_lead='%s',budget='%s' WHERE project_codename = '%s';"
+            cursor.execute(update_query % (a1,a2,a3,a4,a5,a6,a7,a8,a9))
+            db.commit()
+            content = self.ids.content_project_table
+            content.clear_widgets()
+            self.display_project()
+            pop = Popup(title="project updated", content=Label(text='project has been updated'),
+                        size_hint=(None, None), size=(400, 150))
+            pop.open()
+        except Exception as e:
+            print(e)
+            pop = Popup(title="Error", content=Label(text='project not updated. Incorrect data values.'),
+                        size_hint=(None, None), size=(500, 150))
+            pop.open()
+        
+    def add_project_field(self):
+        target = self.ids.right_nav_project
+        target.clear_widgets()
+        e1 = TextInput(hint_text=project_attr[0],size_hint_y=None,height=30)
+        e2 = TextInput(hint_text=project_attr[1],size_hint_y=None,height=30)
+        e3 = TextInput(hint_text=project_attr[2],size_hint_y=None,height=30)
+        e4 = TextInput(hint_text=project_attr[3],size_hint_y=None,height=30)
+        e5 = TextInput(hint_text=project_attr[4],size_hint_y=None,height=30)
+        e6 = TextInput(hint_text=project_attr[5],size_hint_y=None,height=30)
+        e7 = TextInput(hint_text=project_attr[6],size_hint_y=None,height=30)
+        e8 = TextInput(hint_text=project_attr[7],size_hint_y=None,height=30)
+        submit = Button(text='Add',
+                        size_hint_x=None,
+                        width=100,
+                        on_release=lambda x: self.add_project(e1.text,
+                                                                e2.text,
+                                                                e3.text,
+                                                                e4.text,e5.text,e6.text,e7.text,e8.text),size_hint_y=None,height=30)
+        clear= Button(text='Clear',size_hint_x=None,width=100,on_release=lambda x:self.clear_project(),size_hint_y=None,height=30)
+        target.add_widget(e1)
+        target.add_widget(e2)
+        target.add_widget(e3)
+        target.add_widget(e4)
+        target.add_widget(e5)
+        target.add_widget(e6)
+        target.add_widget(e7)
+        target.add_widget(e8)
+        target.add_widget(submit)
+        target.add_widget(clear)
 
+    def delete_project_field(self):
+        target = self.ids.right_nav_project
+        target.clear_widgets()
+        e1 = TextInput(hint_text="Insert code Project Name",size_hint_y=None,height=30)
+        submit = Button(text='Delete',
+                        size_hint_x=None,
+                        width=100,
+                        on_release=lambda x: self.delete_project(e1.text),size_hint_y=None,height=30)
+        clear= Button(text='Clear',size_hint_x=None,width=100,on_release=lambda x:self.clear_project(),size_hint_y=None,height=30)
+        target.add_widget(e1)
+        target.add_widget(submit)
+        target.add_widget(clear)
+    def delete_project(self,a1):
+        try:
+            content = self.ids.content_project_table
+            content.clear_widgets()
+            delete_query = "DELETE FROM project WHERE project_codename='%s';"
+            cursor.execute(delete_query % (a1))
+            db.commit()
+            self.display_project()
+            pop = Popup(title="project deleted", content=Label(text='project has been deleted'),
+                        size_hint=(None, None), size=(400, 150))
+            pop.open()
+        except Exception as e:
+            print(e)
+            pop = Popup(title="Error", content=Label(text='project cannot be deleted.'),
+                        size_hint=(None, None), size=(500, 150))
+            pop.open()
+    
+        
+    def clear_project(self):
+        self.add_project_field()
+        
+    def add_project(self,a1,a2,a3,a4,a5,a6,a7,a8):
+        if a1 == "" or a2 == "" or a3 == "":
+            pop = Popup(title="Missing Input", content=Label(text='Please enter all the required fields'),
+                        size_hint=(None, None), size=(400, 150))
+            pop.open()
+        else:
+            try:
+                content = self.ids.content_project_table
+                content.clear_widgets()
+                insert_query = "INSERT INTO project VALUES ('%s','%s','%s','%s','%s','%s','%s','%s');"
+                cursor.execute(insert_query % (a1,a2,a3,a4,a5,a6,a7,a8))
+                db.commit()
+                self.display_project()
+                pop = Popup(title="project added", content=Label(text='project has been added'),
+                            size_hint=(None, None), size=(350, 150))
+                pop.open()
+            except Exception as e:
+                print(e)
+                pop = Popup(title="Error", content=Label(text=e),
+                            size_hint=(None, None), size=(550, 150))
+                pop.open()
+                
     def display_project(self):
         content = self.ids.content_project_table
         cursor.execute("SELECT * FROM project;")

@@ -9,6 +9,8 @@
         Rectangle:
             size: self.size
             pos: self.pos
+    Image:
+        source: "login.jpg"
     BoxLayout:
         size_hint_y: None
         height: 50
@@ -23,7 +25,7 @@
             bold: True
             size_hint_x: .9
         Button:
-            text: "New Database"
+            text: "Login As"
             size_hint_x: .2
     Label:
         id: Space1
@@ -37,19 +39,27 @@
         TextInput:
             id:username_field
             hint_text: "Username"
+            size_hint_y:None
+            height: 30
             multiline: False
             focus: True
             on_text_validate: pwd_field.focus = True
         TextInput:
             id: pwd_field
             hint_text: "Password"
+            size_hint_y:None
+            height: 30
             multiline: False
             password: True
             on_text_validate: root.validate_user()
             
         Button:
             text: "Sign In"
+            size_hint_y:None
+            height: 30
             on_release: root.validate_user()
+        
+            
     Label:
         id: status
         text: 'Enter Your name'

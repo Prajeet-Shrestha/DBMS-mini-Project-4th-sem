@@ -322,6 +322,18 @@
                             spacing:10
                             size_hint_y: None
                             height: 45
+                            Button:
+                                id: add
+                                text: 'Add'
+                                on_release: root.add_project_field()
+                            Button:
+                                id: update
+                                text: 'Update'
+                                on_release: root.update_project_field()
+                            Button:
+                                id: remove
+                                text: 'Remove'
+                                on_release: root.delete_project_field()
                 #Supplier
                 Screen:
                     id: content_supplier
@@ -348,6 +360,18 @@
                             spacing:10
                             size_hint_y: None
                             height: 45
+                            Button:
+                                id: add
+                                text: 'Add'
+                                on_release: root.add_supplier_field()
+                            Button:
+                                id: update
+                                text: 'Update'
+                                on_release: root.update_supplier_field()
+                            Button:
+                                id: remove
+                                text: 'Remove'
+                                on_release: root.delete_supplier_field()
 
     
             
